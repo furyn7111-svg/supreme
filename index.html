@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Supreme • Invest & Earn</title>
+  
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: #0b0e14;
+      color: #f0f4fa;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 90px; 
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ----- subtle glass cards with hover animation ----- */
+    .card {
+      background: rgba(20, 26, 38, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 30px 50px -12px rgba(0, 180, 255, 0.15);
+    }
+
+    /* ----- header / brand ----- */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .brand i {
+      font-size: 28px;
+      color: #2f9eeb;
+      filter: drop-shadow(0 0 8px rgba(47, 158, 235, 0.5));
+      animation: pulseGlow 3s infinite alternate;
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #9ac7ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      text-align: center;
+      font-size: 14px;
+      color: #8e9bb0;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    /* ----- global buttons ----- */
+    .btn {
+      border: none;
+      border-radius: 18px;
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #1e2533;
+      color: #eef4ff;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active { transform: scale(0.95); }
+
+    .btn-primary {
+      background: linear-gradient(145deg, #1f7bca, #0e5a9e);
+      border: 1px solid rgba(80, 170, 255, 0.3);
+      box-shadow: 0 12px 22px -8px rgba(0, 120, 255, 0.35);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(145deg, #2589db, #0f67b3);
+      box-shadow: 0 16px 28px -8px rgba(0, 140, 255, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #b0bedb;
+    }
+
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); color: white; }
+
+    /* ----- inputs ----- */
+    .input-group { margin-bottom: 18px; }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #a5b3cc;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 16px 18px;
+      background: rgba(12, 18, 28, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      font-size: 15px;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .input-field:focus {
+      border-color: #2f9eeb;
+      box-shadow: 0 0 0 3px rgba(47, 158, 235, 0.15);
+    }
+
+    .input-field::placeholder { color: #536179; }
+    
+    select.input-field {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b8dab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1em;
+    }
+
+    /* ----- toggle between pages ----- */
+    .hidden { display: none !important; }
+
+    /* ----- signup page specific ----- */
+    .signup-footer { text-align: center; margin-top: 20px; font-size: 14px; color: #7a8aa3; }
+    .signup-footer a { color: #2f9eeb; text-decoration: none; font-weight: 500; cursor: pointer; transition: color 0.2s; }
+    .signup-footer a:hover { color: #60b5ff; }
+
+    /* ----- dashboard ----- */
+    .greeting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .greeting-row h2 { font-size: 22px; font-weight: 600; }
+    .greeting-row i { font-size: 24px; color: #2f9eeb; cursor: pointer; transition: transform 0.2s; }
+    .greeting-row i:hover { transform: rotate(15deg) scale(1.1); }
+
+    .balance-card {
+      background: linear-gradient(145deg, #121b2b, #0d1421);
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(47, 158, 235, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .balance-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(47,158,235,0.1) 0%, transparent 60%);
+      animation: rotateGlow 10s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotateGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .balance-label { font-size: 14px; color: #93a5c4; text-transform: uppercase; font-weight: 500; margin-bottom: 6px; position: relative; }
+    .balance-amount { font-size: 38px; font-weight: 800; color: white; display: flex; align-items: center; gap: 8px; position: relative; animation: pulseText 2s infinite alternate; }
+
+    @keyframes pulseText {
+      0% { text-shadow: 0 0 0px rgba(255,255,255,0); }
+      100% { text-shadow: 0 0 10px rgba(47, 158, 235, 0.4); }
+    }
+
+    .balance-sub { display: flex; justify-content: space-between; margin-top: 12px; font-size: 13px; color: #7d91af; position: relative; }
+    .balance-sub span i { color: #2f9eeb; margin-right: 4px; }
+
+    /* action buttons grid */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .action-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 12px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-item:hover { background: rgba(47, 158, 235, 0.1); transform: translateY(-2px); }
+    .action-item i { font-size: 20px; color: #2f9eeb; margin-bottom: 6px; display: block; }
+    .action-item span { font-size: 11px; font-weight: 500; color: #a5b3cc; }
+
+    /* investment plans */
+    .section-title { font-size: 18px; font-weight: 600; margin: 20px 0 12px; display: flex; align-items: center; gap: 6px; }
+    .section-title i { color: #2f9eeb; }
+
+    .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .plan-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-item:active { transform: scale(0.95); }
+    .plan-item:hover { background: rgba(47, 158, 235, 0.08); border-color: rgba(47, 158, 235, 0.3); transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 16px -6px rgba(47,158,235,0.2); }
+    .plan-item i { font-size: 22px; color: #2f9eeb; margin-bottom: 6px; transition: transform 0.3s; }
+    .plan-item:hover i { transform: scale(1.2) rotate(5deg); }
+
+    .plan-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .plan-item p { font-size: 12px; color: #8a9bb8; }
+    .plan-item .roi { color: #3ad07a; font-weight: 700; font-size: 13px; margin-top: 4px; }
+    .plan-item .daily { color: #f5b342; font-weight: 600; font-size: 12px; margin-top: 2px; }
+    .plan-item .lock { color: #ff9f43; font-weight: 600; font-size: 10px; margin-top: 6px; background: rgba(255, 159, 67, 0.1); padding: 2px 6px; border-radius: 10px; display: inline-block; }
+
+    /* ----- REFERRAL SECTION ----- */
+    .referral-card { background: linear-gradient(145deg, #121b2b, #0d1421); border-radius: 24px; padding: 22px; border: 1px solid rgba(255, 255, 255, 0.06); animation: slideIn 0.5s ease-out; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+    .referral-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .referral-header i { font-size: 24px; color: #2f9eeb; background: rgba(47, 158, 235, 0.1); padding: 12px; border-radius: 16px; animation: pulseGlow 2s infinite alternate; }
+    .referral-header h3 { font-size: 20px; font-weight: 700; }
+    .referral-desc { font-size: 14px; color: #8e9bb0; margin-bottom: 18px; }
+    .referral-desc strong { color: #2f9eeb; }
+
+    .referral-link-box {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 16px;
+      padding: 6px 6px 6px 14px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(47, 158, 235, 0.3);
+      transition: border 0.3s;
+    }
+
+    .referral-link-box:hover { border-color: rgba(47, 158, 235, 0.8); }
+    
+    .referral-link-box span { 
+      font-family: 'Courier New', monospace; 
+      font-weight: 600; 
+      font-size: 14px; 
+      color: #60b5ff; 
+      flex-grow: 1; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+    }
+
+    .referral-link-box button {
+      background: #2f9eeb;
+      color: white;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0; 
+    }
+
+    .referral-link-box button:hover { background: #1f7bca; transform: scale(1.05); }
+
+    .referral-stats { display: flex; gap: 10px; margin-bottom: 20px; }
+    .referral-stats div { text-align: center; background: rgba(255, 255, 255, 0.03); padding: 14px 8px; border-radius: 18px; flex: 1; border: 1px solid rgba(255,255,255,0.02); }
+    .referral-stats small { display: block; font-size: 11px; color: #7b8dab; text-transform: uppercase; margin-bottom: 4px; }
+    .referral-stats strong { font-size: 20px; color: white; }
+
+    /* ----- BOTTOM NAVIGATION BAR ----- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(14, 20, 30, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 12px 10px 20px;
+      z-index: 1000;
+    }
+
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #7b8dab; cursor: pointer; transition: all 0.2s ease; width: 60px; }
+    .nav-item i { font-size: 22px; }
+    .nav-item span { font-size: 11px; font-weight: 600; }
+    .nav-item.active { color: #2f9eeb; }
+    .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(47, 158, 235, 0.5)); }
+
+    /* ----- misc animations & utilities ----- */
+    @keyframes pulseGlow {
+      0% { filter: drop-shadow(0 0 4px rgba(47, 158, 235, 0.3)); }
+      100% { filter: drop-shadow(0 0 14px rgba(47, 158, 235, 0.9)); }
+    }
+
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(16px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-slide { animation: fadeSlideUp 0.45s ease forwards; }
+
+    /* Toast */
+    .toast-message {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      background: #1e2b3c;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid #2f9eeb;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 9999;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .toast-message.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+    /* --- Custom Alert Modal --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.show { opacity: 1; pointer-events: auto; }
+    
+    .modal-box {
+      background: #1e2b3c;
+      padding: 30px 20px;
+      border-radius: 24px;
+      width: 85%; max-width: 350px;
+      text-align: center;
+      border: 1px solid #2f9eeb;
+      transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .modal-overlay.show .modal-box { transform: scale(1); }
+    
+    .modal-box i { font-size: 40px; color: #2f9eeb; margin-bottom: 15px; }
+    .modal-box h3 { margin-bottom: 10px; font-size: 20px; }
+    .modal-box p { font-size: 14px; color: #a5b3cc; margin-bottom: 20px; line-height: 1.4; }
+
+    /* --- Deposit Specific Modal Steps --- */
+    #depositStep1, #depositStep2, #depositStep3 {
+      animation: fadeSlideUp 0.3s ease;
+    }
+    .bank-details-box {
+      background: rgba(12, 18, 28, 0.7);
+      border: 1px dashed rgba(47, 158, 235, 0.5);
+      border-radius: 16px;
+      padding: 15px;
+      margin: 15px 0;
+      text-align: left;
+      position: relative;
+    }
+    .bank-details-box p {
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: #a5b3cc;
+    }
+    .bank-details-box strong {
+      font-size: 16px;
+      color: #ffffff;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .copy-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #2f9eeb;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+    .copy-btn:hover { background: #1f7bca; }
+
+    /* Transaction History List */
+    .tx-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+    .tx-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+    .tx-info { display: flex; align-items: center; gap: 12px; }
+    .tx-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .tx-icon.deposit { background: rgba(58, 208, 122, 0.1); color: #3ad07a; }
+    .tx-icon.withdraw { background: rgba(255, 94, 94, 0.1); color: #ff5e5e; }
+    .tx-icon.invest { background: rgba(47, 158, 235, 0.1); color: #2f9eeb; }
+    .tx-icon.referral { background: rgba(245, 179, 66, 0.1); color: #f5b342; }
+    .tx-details h5 { font-size: 14px; margin-bottom: 2px; }
+    .tx-details span { font-size: 12px; color: #7b8dab; }
+    .tx-amount { font-weight: 700; font-size: 15px; }
+    .tx-amount.plus { color: #3ad07a; }
+    .tx-amount.minus { color: #ff5e5e; }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #7b8dab;
+    }
+    .empty-state i {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: rgba(47, 158, 235, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- ========== SIGNUP PAGE ========== -->
+    <div id="signupPage" class="card fade-slide">
+      <div class="brand">
+        <i class="fas fa-crown"></i>
+        <h1>Supreme</h1>
+      </div>
+      <p class="tagline">Nigeria's Premier Investment Platform</p>
+
+      <form id="signupForm" onsubmit="event.preventDefault(); handleSignup();">
+        <div class="input-group">
+          <label for="signupName">Full name</label>
+          <input type="text" id="signupName" class="input-field" placeholder="John Doe" required>
+        </div>
+        <div class="input-group">
+          <label for="signupEmail">Email address</label>
+          <input type="email" id="signupEmail" class="input-field" placeholder="hello@supreme.ng" required>
+        </div>
+        <div class="input-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" class="input-field" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="signupBtn">
+          <i class="fas fa-arrow-right-to-bracket"></i> Create account
+        </button>
+      </form>
+
+      <div class="signup-footer">
+        Already have an account? <a href="#" id="loginLink">Log in</a>
+      </div>
+    </div>
+
+    <!-- ========== DASHBOARD (HOME TAB) ========== -->
+    <div id="homeTab" class="tab-content hidden">
+      <div class="greeting-row fade-slide">
+        <h2 id="userGreeting">Welcome back</h2>
+        <i class="fas fa-bell" onclick="showToast('No new alerts')"></i>
+      </div>
+
+      <div class="card balance-card fade-slide">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount" id="totalBalance">₦0.00</div>
+        <div class="balance-sub">
+          <span><i class="fas fa-arrow-trend-up"></i> +0.0% this week</span>
+          <span><i class="fas fa-wallet"></i> Available</span>
+        </div>
+      </div>
+
+      <!-- Action Grid -->
+      <div class="action-grid fade-slide">
+        <div class="action-item" onclick="switchTab('historyTab', document.querySelectorAll('.nav-item')[2])">
+          <i class="fas fa-file-invoice"></i><span>Bills</span>
+        </div>
+        <div class="action-item" onclick="openDepositModal()">
+          <i class="fas fa-plus-circle"></i><span>Deposit</span>
+        </div>
+        <div class="action-item" onclick="switchTab('withdrawTab', document.querySelectorAll('.nav-item')[3])">
+          <i class="fas fa-arrow-up"></i><span>Withdraw</span>
+        </div>
+      </div>
+
+      <div class="section-title fade-slide">
+        <i class="fas fa-chart-simple"></i> Investment Plans
+      </div>
+      <div class="plan-grid fade-slide">
+        <div class="plan-item" onclick="investNow('Starter', 3500)">
+          <i class="fas fa-seedling"></i>
+          <h4>Starter</h4>
+          <p>₦3,500</p>
+          <div class="roi">12.0% ROI</div>
+          <div class="daily">₦420 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Basic', 5500)">
+          <i class="fas fa-leaf"></i>
+          <h4>Basic</h4>
+          <p>₦5,500</p>
+          <div class="roi">14.0% ROI</div>
+          <div class="daily">₦770 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Pro', 10100)">
+          <i class="fas fa-rocket"></i>
+          <h4>Pro</h4>
+          <p>₦10,100</p>
+          <div class="roi">16.0% ROI</div>
+          <div class="daily">₦1,616 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Elite', 20500)">
+          <i class="fas fa-gem"></i>
+          <h4>Elite</h4>
+          <p>₦20,500</p>
+          <div class="roi">18.5% ROI</div>
+          <div class="daily">₦3,792 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Expert', 55000)">
+          <i class="fas fa-bolt"></i>
+          <h4>Expert</h4>
+          <p>₦55,000</p>
+          <div class="roi">21.0% ROI</div>
+          <div class="daily">₦11,550 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('VIP', 105000)">
+          <i class="fas fa-crown"></i>
+          <h4>VIP</h4>
+          <p>₦105,000</p>
+          <div class="roi">24.0% ROI</div>
+          <div class="daily">₦25,200 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Supreme', 550000)">
+          <i class="fas fa-star"></i>
+          <h4>Supreme</h4>
+          <p>₦550,000</p>
+          <div class="roi">28.0% ROI</div>
+          <div class="daily">₦154,000 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+        <div class="plan-item" onclick="investNow('Legend', 2050000)">
+          <i class="fas fa-trophy"></i>
+          <h4>Legend</h4>
+          <p>₦2,050,000</p>
+          <div class="roi">35.0% ROI</div>
+          <div class="daily">₦717,500 / day</div>
+          <div class="lock"><i class="fas fa-lock"></i> 30 Days</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== INVEST TAB ========== -->
+    <div id="investTab" class="tab-content hidden">
+      <h2 style="margin-bottom: 20px; font-size: 24px;">Invest</h2>
+      <div class="card fade-slide" style="text-align: center; padding: 40px 20px;">
+        <i class="fas fa-chart-line" style="font-size: 50px; color: #2f9eeb; margin-bottom: 20px;"></i>
+        <h3>Grow your wealth</h3>
+        <p style="color: #8e9bb0; margin-bottom: 20px;">Minimum investment is ₦3,500. All plans are locked for 30 days.</p>
+        <button class="btn btn-primary" onclick="switchTab('homeTab', document.querySelectorAll('.nav-item')[0])">View Plans</button>
+      </div>
+    </div>
+
+    <!-- ========== BILLS / TRANSACTION HISTORY TAB ========== -->
+    <div id="historyTab" class="tab-content hidden">
+      <h2 style="margin-bottom: 20px; font-size: 24px;">Transaction History</h2>
+      <div class="card fade-slide">
+        <p style="color: #8e9bb0; font-size: 14px; margin-bottom: 10px;">Your recent activity.</p>
+        
+        <div id="txList" class="tx-list">
+          <!-- Empty state injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== WITHDRAW TAB ========== -->
+    <div id="withdrawTab" class="tab-content hidden">
+      <h2 style="margin-bottom: 20px; font-size: 24px;">Withdraw Funds</h2>
+      
+      <!-- Warning Note -->
+      <div style="background: rgba(245, 179, 66, 0.1); border-left: 4px solid #f5b342; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; color: #f5b342; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+        <div>
+          <strong>Important:</strong> Withdrawals are processed strictly on <b>Mondays</b> between <b>6:00 PM</b> and <b>10:00 PM</b>.
+        </div>
+      </div>
+
+      <div class="card fade-slide">
+        <form id="withdrawForm" onsubmit="event.preventDefault(); handleWithdraw();">
+          
+          <div class="input-group">
+            <label for="withdrawAmount">Amount to Withdraw (₦)</label>
+            <input type="number" id="withdrawAmount" class="input-field" placeholder="e.g. 1000 (Min)" required min="1000">
+          </div>
+
+          <div class="input-group">
+            <label for="withdrawAccountName">Account Name</label>
+            <input type="text" id="withdrawAccountName" class="input-field" placeholder="Chinedu Okafor" required>
+          </div>
+
+          <div class="input-group">
+            <label for="withdrawAccountNumber">Account Number</label>
+            <input type="text" id="withdrawAccountNumber" class="input-field" placeholder="0123456789" maxlength="10" required>
+          </div>
+
+          <div class="input-group">
+            <label for="withdrawBank">Select Bank</label>
+            <select id="withdrawBank" class="input-field" required>
+              <option value="" disabled selected>-- Choose your Nigerian Bank --</option>
+              <option value="Access Bank">Access Bank</option>
+              <option value="Access Bank (Diamond)">Access Bank (Diamond)</option>
+              <option value="Citibank Nigeria">Citibank Nigeria</option>
+              <option value="Ecobank Nigeria">Ecobank Nigeria</option>
+              <option value="Fidelity Bank">Fidelity Bank</option>
+              <option value="First Bank of Nigeria">First Bank of Nigeria</option>
+              <option value="First City Monument Bank (FCMB)">First City Monument Bank (FCMB)</option>
+              <option value="Globus Bank">Globus Bank</option>
+              <option value="Guaranty Trust Bank (GTBank)">Guaranty Trust Bank (GTBank)</option>
+              <option value="Heritage Bank">Heritage Bank</option>
+              <option value="Jaiz Bank">Jaiz Bank</option>
+              <option value="Keystone Bank">Keystone Bank</option>
+              <option value="Kuda Bank">Kuda Bank</option>
+              <option value="Moniepoint">Moniepoint</option>
+              <option value="Opay">Opay</option>
+              <option value="Palmpay">Palmpay</option>
+              <option value="Parallex Bank">Parallex Bank</option>
+              <option value="Polaris Bank">Polaris Bank</option>
+              <option value="Providus Bank">Providus Bank</option>
+              <option value="Stanbic IBTC Bank">Stanbic IBTC Bank</option>
+              <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+              <option value="Sterling Bank">Sterling Bank</option>
+              <option value="Suntrust Bank">Suntrust Bank</option>
+              <option value="Union Bank of Nigeria">Union Bank of Nigeria</option>
+              <option value="United Bank For Africa (UBA)">United Bank For Africa (UBA)</option>
+              <option value="Unity Bank">Unity Bank</option>
+              <option value="Wema Bank">Wema Bank</option>
+              <option value="Zenith Bank">Zenith Bank</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+            <i class="fas fa-paper-plane"></i> Request Withdrawal
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========== REFERRAL TAB ========== -->
+    <div id="referralTab" class="tab-content hidden">
+      <div class="referral-card">
+        <div class="referral-header">
+          <i class="fas fa-user-plus"></i>
+          <h3>Refer & Earn</h3>
+        </div>
+        <p class="referral-desc">Invite friends. You earn <strong>₦500</strong> instantly when they make their first deposit!</p>
+
+        <div class="referral-link-box">
+          <span id="referralLinkDisplay">Generating link...</span>
+          <button onclick="copyReferral()"><i class="fas fa-copy"></i></button>
+        </div>
+
+        <div class="referral-stats">
+          <div>
+            <small>Invited</small>
+            <strong id="invitedCount">0</strong>
+          </div>
+          <div>
+            <small>Earned</small>
+            <strong id="referralEarned">₦0</strong>
+          </div>
+          <div>
+            <small>Pending</small>
+            <strong id="referralPending">₦0</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="shareReferral()">
+          <i class="fas fa-share-nodes"></i> Share Link
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== PROFILE TAB ========== -->
+    <div id="profileTab" class="tab-content hidden">
+      <h2 style="margin-bottom: 20px; font-size: 24px;">Profile</h2>
+      <div class="card fade-slide" style="text-align: center;">
+        <div style="width: 70px; height: 70px; background: rgba(47, 158, 235, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+          <i class="fas fa-user" style="font-size: 30px; color: #2f9eeb;"></i>
+        </div>
+        <h3 id="profileName" style="margin-bottom: 4px;">User Name</h3>
+        <p id="profileEmail" style="color: #8e9bb0; font-size: 14px; margin-bottom: 24px;">email@example.com</p>
+        
+        <button class="btn btn-secondary" style="margin-bottom: 12px;" onclick="showToast('Settings coming soon')">
+          <i class="fas fa-cog"></i> Account Settings
+        </button>
+        <button class="btn btn-secondary" onclick="logout()" style="color: #ff5e5e; border-color: rgba(255, 94, 94, 0.2);">
+          <i class="fas fa-sign-out-alt"></i> Log Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION (5 Items) -->
+  <div id="bottomNav" class="bottom-nav hidden">
+    <div class="nav-item active" onclick="switchTab('homeTab', this)">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('investTab', this)">
+      <i class="fas fa-chart-pie"></i>
+      <span>Invest</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('historyTab', this)">
+      <i class="fas fa-file-invoice"></i>
+      <span>History</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('withdrawTab', this)">
+      <i class="fas fa-wallet"></i>
+      <span>Withdraw</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('referralTab', this)">
+      <i class="fas fa-users"></i>
+      <span>Refer</span>
+    </div>
+  </div>
+
+  <!-- Custom Modal Popup -->
+  <div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+      <i id="modalIcon" class="fas fa-info-circle"></i>
+      <h3 id="modalTitle">Alert</h3>
+      <p id="modalMessage">Message goes here</p>
+      <button class="btn btn-primary" onclick="closeModal()">Okay, Got it</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- DEPOSIT MODAL (OPay Transfer Flow) -->
+  <!-- ========================================== -->
+  <div id="depositModal" class="modal-overlay">
+    <div class="modal-box" style="padding: 25px 20px;">
+      
+      <!-- STEP 1: Select Amount -->
+      <div id="depositStep1">
+        <i class="fas fa-wallet" style="font-size: 35px; color: #2f9eeb; margin-bottom: 10px;"></i>
+        <h3>Deposit Funds</h3>
+        <p style="font-size: 13px; margin-bottom: 15px;">Enter the amount you want to deposit. Minimum is ₦1,000.</p>
+        
+        <div class="input-group" style="margin-bottom: 15px;">
+          <input type="number" id="depositAmountInput" class="input-field" placeholder="e.g. 5000" style="text-align: center; font-size: 18px; font-weight: 700;">
+        </div>
+        
+        <button class="btn btn-primary" onclick="proceedToBankDetails()">
+          Proceed to Pay
+        </button>
+        <button class="btn btn-secondary" style="margin-top: 10px; background: transparent; border: none;" onclick="closeDepositModal()">
+          Cancel
+        </button>
+      </div>
+
+      <!-- STEP 2: Show Bank Details & Confirm -->
+      <div id="depositStep2" class="hidden">
+        <i class="fas fa-check-circle" style="font-size: 35px; color: #3ad07a; margin-bottom: 10px;"></i>
+        <h3>Make Payment</h3>
+        <p style="font-size: 13px; margin-bottom: 15px;">Transfer exactly <strong id="displayDepositAmount" style="color: #f5b342; font-size: 16px;">₦0</strong> to the account below.</p>
+        
+        <div class="bank-details-box">
+          <button class="copy-btn" onclick="copyBankDetails()">Copy</button>
+          <p>Bank Name</p>
+          <strong>OPAY</strong>
+          <p>Account Number</p>
+          <strong id="bankAccNum">8103526597</strong>
+          <p>Account Name</p>
+          <strong>SUPREME ODEH</strong>
+        </div>
+
+        <button class="btn btn-primary" onclick="promptSenderName()">
+          I Have Made Payment
+        </button>
+      </div>
+
+      <!-- STEP 3: Enter Sender Name & Verify -->
+      <div id="depositStep3" class="hidden">
+        <i class="fas fa-user-check" style="font-size: 35px; color: #2f9eeb; margin-bottom: 10px;"></i>
+        <h3>Verify Payment</h3>
+        <p style="font-size: 13px; margin-bottom: 15px;">Enter the exact name you used for the bank transfer so we can confirm your payment.</p>
+        
+        <div class="input-group" style="margin-bottom: 20px;">
+          <input type="text" id="senderNameInput" class="input-field" placeholder="e.g. John Doe" style="text-align: center;">
+        </div>
+
+        <button class="btn btn-primary" onclick="verifyPayment()">
+          <i class="fas fa-shield-check"></i> Confirm Payment
+        </button>
+        <button class="btn btn-secondary" style="margin-top: 10px; background: transparent; border: none;" onclick="closeDepositModal()">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast-message">✓ Copied!</div>
+
+  <script>
+    (function() {
+      let baseUrl = window.location.origin;
+      if (baseUrl === 'null' || baseUrl === 'file://' || window.location.protocol === 'file:') {
+        baseUrl = 'http://localhost:5500'; 
+      }
+
+      const signupPage = document.getElementById('signupPage');
+      const bottomNav = document.getElementById('bottomNav');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const userGreeting = document.getElementById('userGreeting');
+      const totalBalance = document.getElementById('totalBalance');
+      const referralLinkDisplay = document.getElementById('referralLinkDisplay');
+      const invitedCount = document.getElementById('invitedCount');
+      const referralEarned = document.getElementById('referralEarned');
+      const referralPending = document.getElementById('referralPending');
+      const profileName = document.getElementById('profileName');
+      const profileEmail = document.getElementById('profileEmail');
+      const toast = document.getElementById('toast');
+      const txList = document.getElementById('txList');
+      
+      const customModal = document.getElementById('customModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalIcon = document.getElementById('modalIcon');
+
+      const depositModal = document.getElementById('depositModal');
+      const depositStep1 = document.getElementById('depositStep1');
+      const depositStep2 = document.getElementById('depositStep2');
+      const depositStep3 = document.getElementById('depositStep3');
+      let currentDepositAmount = 0;
+
+      let currentUser = null;
+      let toastTimer;
+
+      function showToast(message, isSuccess = true) {
+        toast.textContent = message;
+        toast.style.borderColor = isSuccess ? '#2f9eeb' : '#ff5e5e';
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+
+      function showPopup(title, message, iconClass = 'fa-info-circle', iconColor = '#2f9eeb') {
+        modalTitle.textContent = title;
+        modalMessage.innerHTML = message;
+        modalIcon.className = `fas ${iconClass}`;
+        modalIcon.style.color = iconColor;
+        customModal.classList.add('show');
+      }
+
+      window.closeModal = function() {
+        customModal.classList.remove('show');
+      }
+
+      window.openDepositModal = function() {
+        currentDepositAmount = 0;
+        document.getElementById('depositAmountInput').value = '';
+        document.getElementById('senderNameInput').value = '';
+        
+        depositStep1.classList.remove('hidden');
+        depositStep2.classList.add('hidden');
+        depositStep3.classList.add('hidden');
+        
+        depositModal.classList.add('show');
+      }
+
+      window.closeDepositModal = function() {
+        depositModal.classList.remove('show');
+      }
+
+      window.proceedToBankDetails = function() {
+        const amt = parseFloat(document.getElementById('depositAmountInput').value);
+        if(isNaN(amt) || amt < 1000) {
+           return showToast('Minimum deposit is ₦1,000', false);
+        }
+        currentDepositAmount = amt;
+        
+        document.getElementById('displayDepositAmount').textContent = `₦${amt.toLocaleString()}`;
+        
+        depositStep1.classList.add('hidden');
+        depositStep2.classList.remove('hidden');
+      }
+
+      window.copyBankDetails = function() {
+        const accNum = document.getElementById('bankAccNum').textContent;
+        fallbackCopyTextToClipboard(accNum);
+      }
+
+      window.promptSenderName = function() {
+        depositStep2.classList.add('hidden');
+        depositStep3.classList.remove('hidden');
+      }
+
+      window.verifyPayment = function() {
+        const senderName = document.getElementById('senderNameInput').value.trim();
+        if(!senderName) return showToast('Please enter the sender name', false);
+
+        const btn = document.querySelector('#depositStep3 .btn-primary');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+        // Simulate network request for auto-verification
+        setTimeout(() => {
+          // 1. Add to Balance
+          currentUser.balance += currentDepositAmount;
+          
+          // 2. Log Transaction
+          currentUser.transactions.push({
+            type: 'deposit',
+            title: `Deposit from ${senderName}`,
+            amount: currentDepositAmount,
+            date: new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })
+          });
+
+          // 3. Handle Referral Bonus
+          if (!currentUser.hasDeposited && currentUser.referredBy) {
+             currentUser.hasDeposited = true;
+             
+             const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+             const inviter = allUsers[currentUser.referredBy];
+             
+             if (inviter) {
+               inviter.balance = (inviter.balance || 0) + 500;
+               inviter.referralEarned = (inviter.referralEarned || 0) + 500;
+               inviter.pendingReferrals = Math.max(0, (inviter.pendingReferrals || 1) - 1);
+               
+               inviter.transactions.push({
+                 type: 'referral',
+                 title: `Referral Bonus (${currentUser.name.split(' ')[0]})`,
+                 amount: 500,
+                 date: new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })
+               });
+
+               allUsers[currentUser.referredBy] = inviter;
+               localStorage.setItem('supremeAllUsers', JSON.stringify(allUsers));
+             }
+          }
+
+          // 4. Save Data
+          const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+          allUsers[currentUser.email] = currentUser;
+          localStorage.setItem('supremeAllUsers', JSON.stringify(allUsers));
+
+          updateBalanceDisplay();
+          saveState();
+          closeDepositModal();
+          
+          showPopup(
+            "Payment Confirmed", 
+            `₦${currentDepositAmount.toLocaleString()} has been successfully added to your balance.`, 
+            "fa-check-circle", 
+            "#3ad07a"
+          );
+          
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-shield-check"></i> Confirm Payment';
+        }, 1500); 
+      };
+
+      function generateUniqueReferralCode() {
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let result = 'SP-';
+        for (let i = 0; i < 5; i++) {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+      }
+
+      function updateBalanceDisplay() {
+        if(!currentUser) return;
+        totalBalance.innerHTML = `₦${currentUser.balance.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+
+      function renderTransactions() {
+        if (!currentUser) return;
+        
+        if (!currentUser.transactions || currentUser.transactions.length === 0) {
+          txList.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-receipt"></i>
+              <p>No transactions yet.</p>
+              <p style="font-size: 12px; margin-top: 5px;">Make a deposit, withdrawal, or investment to see them here.</p>
+            </div>`;
+          return;
+        }
+
+        txList.innerHTML = '';
+        const sortedTx = [...currentUser.transactions].reverse();
+        
+        sortedTx.forEach(tx => {
+          let iconClass = 'deposit';
+          let iconFa = 'fa-arrow-down';
+          let amountClass = 'plus';
+          let amountSign = '+';
+
+          if(tx.type === 'withdraw') {
+            iconClass = 'withdraw'; iconFa = 'fa-arrow-up'; amountClass = 'minus'; amountSign = '-';
+          } else if(tx.type === 'invest') {
+            iconClass = 'invest'; iconFa = 'fa-chart-line'; amountClass = 'minus'; amountSign = '-';
+          } else if(tx.type === 'referral') {
+            iconClass = 'referral'; iconFa = 'fa-gift'; amountClass = 'plus'; amountSign = '+';
+          }
+          
+          const txEl = document.createElement('div');
+          txEl.className = 'tx-item';
+          txEl.innerHTML = `
+            <div class="tx-info">
+              <div class="tx-icon ${iconClass}"><i class="fas ${iconFa}"></i></div>
+              <div class="tx-details">
+                <h5>${tx.title}</h5>
+                <span>${tx.date}</span>
+              </div>
+            </div>
+            <div class="tx-amount ${amountClass}">${amountSign}₦${tx.amount.toLocaleString('en-NG')}</div>
+          `;
+          txList.appendChild(txEl);
+        });
+      }
+
+      window.switchTab = function(tabId, navElement) {
+        tabContents.forEach(tab => tab.classList.add('hidden'));
+        document.getElementById(tabId).classList.remove('hidden');
+        
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        if(navElement) navElement.classList.add('active');
+
+        const activeTab = document.getElementById(tabId);
+        activeTab.style.animation = 'none';
+        void activeTab.offsetHeight;
+        activeTab.style.animation = 'fadeSlideUp 0.45s ease forwards';
+
+        if(tabId === 'historyTab') renderTransactions();
+      };
+
+      function renderDashboard(user) {
+        if (!user) return;
+
+        const firstName = user.name.split(' ')[0] || 'Investor';
+        userGreeting.textContent = `Welcome, ${firstName}`;
+        profileName.textContent = user.name;
+        profileEmail.textContent = user.email;
+
+        updateBalanceDisplay();
+        referralLinkDisplay.textContent = `${baseUrl}/?ref=${user.referralCode}`;
+
+        invitedCount.textContent = user.invited || 0;
+        referralEarned.textContent = `₦${(user.referralEarned || 0).toLocaleString()}`;
+        
+        const pendingAmount = (user.pendingReferrals || 0) * 500;
+        referralPending.textContent = `₦${pendingAmount.toLocaleString()}`;
+
+        saveState();
+      }
+
+      function showApp(user) {
+        currentUser = user;
+        renderDashboard(user);
+        renderTransactions();
+        
+        signupPage.classList.add('hidden');
+        bottomNav.classList.remove('hidden');
+        
+        const homeNav = document.querySelector('.nav-item');
+        switchTab('homeTab', homeNav);
+      }
+
+      function showSignup() {
+        bottomNav.classList.add('hidden');
+        tabContents.forEach(tab => tab.classList.add('hidden'));
+        signupPage.classList.remove('hidden');
+        document.getElementById('signupForm').reset();
+      }
+
+      window.logout = function() {
+        currentUser = null;
+        localStorage.removeItem('supremeUser');
+        showSignup();
+        showToast('Logged out safely', false);
+      };
+
+      window.handleSignup = function() {
+        const nameVal = document.getElementById('signupName').value.trim();
+        const emailVal = document.getElementById('signupEmail').value.trim();
+        const passVal = document.getElementById('signupPassword').value.trim();
+
+        if (!nameVal || !emailVal || !passVal) return showToast('Please fill all fields', false);
+        if (!emailVal.includes('@')) return showToast('Enter a valid email', false);
+        if (passVal.length < 4) return showToast('Password must be 4+ chars', false);
+
+        const btn = document.getElementById('signupBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        let referredBy = null;
+
+        if (refCode) {
+          const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+          for (const uid in allUsers) {
+            if (allUsers[uid].referralCode === refCode) {
+              referredBy = uid; 
+              break;
+            }
+          }
+        }
+
+        setTimeout(() => {
+          const user = {
+            name: nameVal,
+            email: emailVal,
+            referralCode: generateUniqueReferralCode(),
+            referredBy: referredBy,
+            hasDeposited: false,
+            invited: 0,
+            referralEarned: 0,
+            pendingReferrals: 0,
+            balance: 0, 
+            transactions: [], 
+            joined: Date.now()
+          };
+          
+          const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+          allUsers[emailVal] = user;
+          
+          if (referredBy && allUsers[referredBy]) {
+             allUsers[referredBy].pendingReferrals = (allUsers[referredBy].pendingReferrals || 0) + 1;
+             allUsers[referredBy].invited = (allUsers[referredBy].invited || 0) + 1;
+             localStorage.setItem('supremeAllUsers', JSON.stringify(allUsers));
+          }
+
+          showApp(user);
+          showToast(`Welcome to Supreme, ${nameVal.split(' ')[0]}! 🇳🇬`);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Create account';
+        }, 800);
+      };
+
+      window.handleWithdraw = function() {
+        if (!currentUser) return;
+
+        const now = new Date();
+        const day = now.getDay(); 
+        const hours = now.getHours(); 
+
+        if (day !== 1 || hours < 18 || hours >= 22) {
+           showPopup(
+             "Withdrawal Closed", 
+             "Withdrawals are only processed on <b>Mondays between 6:00 PM and 10:00 PM</b>. Please try again during this window.", 
+             "fa-clock", 
+             "#f5b342"
+           );
+           return;
+        }
+
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        const accName = document.getElementById('withdrawAccountName').value.trim();
+        const accNum = document.getElementById('withdrawAccountNumber').value.trim();
+        const bank = document.getElementById('withdrawBank').value;
+
+        if(!amount || !accName || !accNum || !bank) return showToast('Please fill all fields', false);
+        if(accNum.length < 10) return showToast('Account number must be 10 digits', false);
+        
+        if (amount < 1000) {
+           return showPopup("Minimum Amount", "The minimum withdrawal amount is <b>₦1,000</b>.", "fa-exclamation-triangle", "#ff5e5e");
+        }
+        
+        if(amount > currentUser.balance) {
+          return showPopup("Insufficient Funds", "You do not have enough balance for this withdrawal.", "fa-times-circle", "#ff5e5e");
+        }
+
+        const btn = document.querySelector('#withdrawForm button[type="submit"]');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        setTimeout(() => {
+          currentUser.balance -= amount;
+          
+          currentUser.transactions.push({
+            type: 'withdraw',
+            title: `Withdrawal to ${bank}`,
+            amount: amount,
+            date: new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })
+          });
+
+          const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+          allUsers[currentUser.email] = currentUser;
+          localStorage.setItem('supremeAllUsers', JSON.stringify(allUsers));
+
+          updateBalanceDisplay();
+          saveState();
+
+          showPopup("Withdrawal Successful", `Your withdrawal of <b>₦${amount.toLocaleString()}</b> to ${bank} is being processed.`, "fa-check-circle", "#3ad07a");
+          
+          document.getElementById('withdrawForm').reset();
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Request Withdrawal';
+          
+          switchTab('historyTab', document.querySelectorAll('.nav-item')[2]);
+        }, 1200);
+      };
+
+      window.investNow = function(planName, amount) {
+        if (!currentUser) return;
+
+        if (currentUser.balance < amount) {
+          return showPopup("Insufficient Balance", `You need ₦${amount.toLocaleString()} to invest in the ${planName} plan.`, "fa-times-circle", "#ff5e5e");
+        }
+
+        const confirmInvest = confirm(`Are you sure you want to invest ₦${amount.toLocaleString()} in the ${planName} plan?`);
+        if(!confirmInvest) return;
+
+        currentUser.balance -= amount;
+        
+        currentUser.transactions.push({
+          type: 'invest',
+          title: `Invested in ${planName} Plan`,
+          amount: amount,
+          date: new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })
+        });
+
+        const allUsers = JSON.parse(localStorage.getItem('supremeAllUsers') || '{}');
+        allUsers[currentUser.email] = currentUser;
+        localStorage.setItem('supremeAllUsers', JSON.stringify(allUsers));
+
+        updateBalanceDisplay();
+        saveState();
+        
+        showPopup("Investment Successful", `You have successfully invested <b>₦${amount.toLocaleString()}</b> in the ${planName} plan. Your 30-day lock has started.`, "fa-chart-line", "#2f9eeb");
+        
+        switchTab('historyTab', document.querySelectorAll('.nav-item')[2]);
+      };
+
+      document.getElementById('loginLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('signupName').value = 'Chinedu Okafor';
+        document.getElementById('signupEmail').value = 'chinedu@supreme.ng';
+        document.getElementById('signupPassword').value = 'demo1234';
+        showToast('Demo credentials filled', true);
+      });
+
+      window.copyReferral = function() {
+        const link = referralLinkDisplay.textContent;
+        fallbackCopyTextToClipboard(link);
+      };
+
+      function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          var successful = document.execCommand('copy');
+          if(successful) showToast(`Copied!`, true);
+          else showToast('Unable to copy', false);
+        } catch (err) {
+          showToast('Unable to copy', false);
+        }
+        document.body.removeChild(textArea);
+      }
+
+      window.shareReferral = function() {
+        if (!currentUser) return;
+        const link = referralLinkDisplay.textContent;
+        const shareText = `Join Supreme and start earning massive daily profits in Naira! 🇳🇬\n\nUse my link to register:\n${link}`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Join Supreme Invest',
+            text: shareText,
+            url: link
+          }).then(() => {
+             showToast('Shared successfully!', true);
+          }).catch((err) => {
+             console.log('Share failed', err);
+          });
+        } else {
+          fallbackCopyTextToClipboard(shareText);
+          showToast('Invite message copied!', true);
+        }
+      };
+
+      function saveState() {
+        try { localStorage.setItem('supremeUser', JSON.stringify(currentUser)); } catch (e) {}
+      }
+
+      function init() {
+        try {
+          const stored = localStorage.getItem('supremeUser');
+          if (stored) {
+            const user = JSON.parse(stored);
+            if (user && user.email) {
+              if (!user.referralCode || user.referralCode.length < 8) {
+                 user.referralCode = generateUniqueReferralCode();
+              }
+              if (user.balance === undefined) user.balance = 0;
+              if (!user.transactions) user.transactions = [];
+              
+              showApp(user);
+              return;
+            }
+          }
+        } catch (e) {}
+        showSignup();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
